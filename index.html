@@ -672,30 +672,15 @@
     </div>
 
     <div class="product-container">
-        <div class="product" data-name="FUNKY LAND 7K " data-image="nuevo2.jpeg" data-price="$16.000" data-flavors="BLUE RAZZ ICE , MELÓN BERRY ICE , WATERMELON ICE , MIXED FRUIT" style="cursor: pointer;">
-            <h2>FUNKY LAND 7K</h2>
-            <img src="nuevo2.jpeg" alt="FUNKY LAND 7K">
-            <p>$16.000</p>
+        <div class="product" data-name="ignite v400" data-image="5.jpg" data-price="$30.500" data-flavors="blue dream" style="cursor: pointer;">
+            <h2>ignite v400</h2>
+            <img src="5.jpg" alt="ignite v400">
+            <p>$30.500</p>
         </div>
-        <div class="product" data-name="IGNITE V150 " data-image="5.jpg" data-price="SIN STOCK" data-flavors="blue dream" style="cursor: pointer;">
-            <h2> IGNITE V150 </h2>
-            <img src="5.jpg" alt="IGNITE V150 ">
-            <p>SIN STOCK</p>
-        </div>
-        <div class="product" data-name="ELFBAR TE 30K" data-image="nuevo1.jpeg" data-price="$26.000" data-flavors="BUBBALOO GRAPE" style="cursor: pointer;">
-            <h2>ELFBAR TE 30K</h2>
-            <img src="nuevo1.jpeg" alt="ELFBAR TE 30K">
-            <p>$26.000</p>
-        </div>
-             <div class="product" data-name="ADJUST 40K" data-image="nuevo3.jpeg" data-price="SIN STOCK" data-flavors="TRIPLE BERRY - GRAPE" style="cursor: pointer;">
+             <div class="product" data-name="ADJUST 40K" data-image="nuevo3.jpeg" data-price="$29.500" data-flavors="TRIPLE BERRY - GRAPE" style="cursor: pointer;">
             <h2>ADJUST 40K</h2>
             <img src="nuevo3.jpeg" alt="ADJUST 40K">
-            <p>SIN STOCK</p>
-        </div>
-         <div class="product" data-name="LOST ORION 10K" data-image="6.jpg" data-price="SIN STOCK" data-flavors="Lush ice" style="cursor: pointer;">
-            <h2>LOST ORION 10K</h2>
-            <img src="6.jpg" alt="Product image">
-            <p>Precio: SIN STOCK</p>
+            <p>$29.500</p>
         </div>
     </div>
 
@@ -734,25 +719,6 @@
             <a id="modalWhatsAppLink" href="#" target="_blank" class="button" style="margin-top: 10px; display: inline-block;">Contact on WhatsApp</a>
         </div>
     </div>
-
-    <!-- The Promoter Code Modal -->
-    <div id="promoCodeModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <div id="promo-question">
-                <h2 style="margin-bottom: 15px;">¿Tenés un código de promotor?</h2>
-                <button id="promo-yes" class="button">Sí</button>
-                <button id="promo-no" class="button">No</button>
-            </div>
-            <div id="promo-input-container" style="display: none;">
-                <h2 style="margin-bottom: 15px;">Ingresá tu código</h2>
-                <input type="text" id="promo-code-input" placeholder="Código">
-                <button id="promo-validate" class="button">Validar</button>
-                <p id="promo-error" style="color: red; display: none; margin-top: 10px;"></p>
-            </div>
-        </div>
-    </div>
-
 
     <script>
         // Dark Mode Toggle
@@ -833,24 +799,10 @@
         const modalFlavors = document.getElementById('modalFlavors');
         const modalWhatsAppLink = document.getElementById('modalWhatsAppLink');
 
-        const promoCodeModal = document.getElementById('promoCodeModal');
-        const promoQuestion = document.getElementById('promo-question');
-        const promoInputContainer = document.getElementById('promo-input-container');
-        const promoYesBtn = document.getElementById('promo-yes');
-        const promoNoBtn = document.getElementById('promo-no');
-        const promoCodeInput = document.getElementById('promo-code-input');
-        const promoValidateBtn = document.getElementById('promo-validate');
-        const promoError = document.getElementById('promo-error');
-
         const allCloseButtons = document.querySelectorAll('.close-button');
         const products = document.querySelectorAll('.product');
 
         let currentProductData = null; // To store data of the clicked product
-        let currentPromoCode = null; // To store the validated promo code for the current transaction
-
-        // --- New Promo Code Logic ---
-        const validPromoCodes = ['bauti', 'bruno', 'juligarr', 'vale20'];
-        // In a real-world scenario, you might want to manage used codes on a server.
 
         // --- Price Helper Functions ---
         function parsePrice(priceStr) {
@@ -875,12 +827,7 @@
                 flavorsMessage = ` Sabor elegido es : ${selectedFlavors}`;
             }
 
-            let promoMessage = "";
-            if (currentPromoCode) {
-                promoMessage = ` (Código de promotor usado: ${currentPromoCode})`;
-            }
-
-            const message = `Hola, estoy interesado/a en el producto: ${name} - Precio: ${price}.${flavorsMessage}${promoMessage}`;
+            const message = `Hola, estoy interesado/a en el producto: ${name} - Precio: ${price}.${flavorsMessage}`;
             modalWhatsAppLink.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
         }
 
@@ -895,21 +842,8 @@
             modalImage.src = image;
             modalImage.alt = name;
 
-            const originalPriceNum = parsePrice(originalPriceStr);
-            let finalPriceNum = originalPriceNum;
-            let finalPriceStr;
-
-            if (currentPromoCode && originalPriceNum > 0) {
-                finalPriceNum = Math.round(originalPriceNum * 0.9);
-                const originalFormatted = formatPrice(originalPriceNum);
-                const discountedFormatted = formatPrice(finalPriceNum);
-                // Update the modal to show the original price struck through and the new price
-                modalPrice.innerHTML = `Precio: <span style="text-decoration: line-through; color: red;">${originalFormatted}</span><br><b>${discountedFormatted}</b>`;
-                finalPriceStr = discountedFormatted;
-            } else {
-                finalPriceStr = formatPrice(originalPriceNum);
-                modalPrice.textContent = `Precio: ${finalPriceStr}`;
-            }
+            const finalPriceStr = originalPriceStr;
+            modalPrice.textContent = `Precio: ${finalPriceStr}`;
 
             // Clear previous flavors, keeping the <h4> title
             while (modalFlavors.children.length > 1) {
@@ -918,10 +852,10 @@
             if (flavors.length > 0) {
               modalFlavors.querySelector('h4').textContent = 'Elige un sabor:';
               modalFlavors.querySelector('h4').style.display = '';
-          } else {
+            } else {
               modalFlavors.querySelector('h4').textContent = '';
               modalFlavors.querySelector('h4').style.display = 'none';
-          }
+            }
 
 
             flavors.forEach(flavor => {
@@ -963,65 +897,19 @@
         products.forEach(product => {
             product.addEventListener('click', () => {
                 currentProductData = product.dataset;
-                currentPromoCode = null; // Reset promo code for new selection
-                promoError.style.display = 'none';
-                promoCodeInput.value = '';
-                promoInputContainer.style.display = 'none';
-                promoQuestion.style.display = 'block';
-                promoCodeModal.style.display = 'block';
+                showProductModal();
             });
-        });
-
-        promoNoBtn.addEventListener('click', () => {
-            currentPromoCode = null; // Ensure no code is used
-            promoCodeModal.style.display = 'none';
-            showProductModal();
-        });
-
-        promoYesBtn.addEventListener('click', () => {
-            promoQuestion.style.display = 'none';
-            promoInputContainer.style.display = 'block';
-        });
-
-        function validateAndApplyPromoCode(code) {
-            const normalizedCode = code.trim().toLowerCase();
-
-            if (validPromoCodes.includes(normalizedCode)) {
-                // Code is valid
-                currentPromoCode = normalizedCode; // Set code for this transaction
-
-                promoError.textContent = `¡Código "${normalizedCode}" aplicado con éxito!`;
-                promoError.style.color = 'green';
-                promoError.style.display = 'block';
-
-                // Proceed to the product modal after a short delay
-                setTimeout(() => {
-                    promoCodeModal.style.display = 'none';
-                    showProductModal();
-                }, 1500); // 1.5 seconds
-
-            } else {
-                promoError.textContent = 'El código ingresado no es válido.';
-                promoError.style.color = 'red';
-                promoError.style.display = 'block';
-            }
-        }
-
-        promoValidateBtn.addEventListener('click', () => {
-            validateAndApplyPromoCode(promoCodeInput.value);
         });
 
         allCloseButtons.forEach(button => {
             button.addEventListener('click', () => {
                 modal.style.display = 'none';
-                promoCodeModal.style.display = 'none';
             });
         });
 
         window.addEventListener('click', (event) => {
-            if (event.target === modal || event.target === promoCodeModal) {
+            if (event.target === modal) {
                 modal.style.display = 'none';
-                promoCodeModal.style.display = 'none';
             }
         });
 
